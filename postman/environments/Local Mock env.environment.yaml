@@ -1,0 +1,4 @@
+name: Local Mock env
+values:
+  - key: baseUrl
+    value: 'http://localhost:4500'
