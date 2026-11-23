@@ -1,0 +1,79 @@
+$kind: collection
+description: |-
+  ## Vehicle Service Collection
+
+  This collection provides a complete set of CRUD (Create, Read, Update, Delete) operations for managing vehicle records through the Vehicle Service API. Use it to create new vehicles, retrieve individual or all vehicles, update vehicle details, and delete records.
+
+  ---
+
+  ## Base URL
+
+  All requests in this collection use the `{{baseUrl}}` variable as the base URL. Set this variable in your active environment to point to the appropriate server (e.g., `https://api.example.com`).
+
+  ---
+
+  ## Authorization
+
+  This collection authenticates using an **API Key** stored securely in the Postman Vault. The key is referenced as:
+
+  ```
+  vault:apiKey
+  ```
+
+  Postman automatically resolves this vault reference at request time, keeping your credentials out of plain text and version control.
+
+  ---
+
+  ## Endpoints
+
+  | Method | Path | Description |
+  |--------|------|-------------|
+  | `POST` | `/vehicles` | Create a new vehicle record |
+  | `GET` | `/vehicles/:id` | Retrieve a specific vehicle by its ID |
+  | `PATCH` | `/vehicles/:id` | Update an existing vehicle's details |
+  | `DELETE` | `/vehicles/:id` | Delete a vehicle record by its ID |
+  | `GET` | `/vehicles` | Retrieve a list of all vehicles |
+
+  ### `POST /vehicles`
+  Creates a new vehicle in the system. Requires a JSON body with vehicle details such as `nickName`, `vin`, `make`, `model`, `year`, and `miles`.
+
+  ### `GET /vehicles/:id`
+  Retrieves a single vehicle record by its unique identifier. Replace `:id` with the vehicle's ID.
+
+  ### `PATCH /vehicles/:id`
+  Updates one or more fields of an existing vehicle. Replace `:id` with the vehicle's ID and provide the fields to update in the request body.
+
+  ### `DELETE /vehicles/:id`
+  Permanently deletes a vehicle record. Replace `:id` with the vehicle's ID. Returns no content on success.
+
+  ### `GET /vehicles`
+  Returns a list of all vehicle records in the system.
+
+  ---
+
+  ## Response Codes
+
+  | Status Code | Meaning |
+  |-------------|---------|
+  | `200 OK` | The request was successful and a response body is returned |
+  | `201 Created` | A new vehicle was successfully created |
+  | `204 No Content` | The request was successful with no response body (e.g., after a delete) |
+  | `400 Bad Request` | The request was malformed or missing required attributes |
+  | `404 Not Found` | The requested vehicle could not be found |
+  | `409 Conflict` | A vehicle with the same identifier already exists |
+  | `500 Internal Server Error` | An unexpected error occurred on the server |
+variables:
+  baseUrl: "{{baseUrl}}"
+scripts:
+  - type: http:afterResponse
+    code: |-
+      pm.test("Status code is 200 or 201",function(){
+          pm.expect(pm.response.code).to.be.oneOf(([200, 201, 204])
+      });
+    language: text/javascript
+auth:
+  - id: 3afcd1d5-7f86-459f-b7d2-a0e71afab234
+    type: apikey
+    name: apikey auth
+    credentials:
+      key: X-API-Key

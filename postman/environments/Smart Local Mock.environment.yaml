@@ -1,0 +1,4 @@
+name: Smart Local Mock
+values:
+  - key: baseUrl
+    value: ''
